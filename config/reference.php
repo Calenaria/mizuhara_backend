@@ -146,7 +146,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         cookie_name?: scalar|null, // The name of the cookie to use when using stateless protection. // Default: "csrf-token"
  *     },
  *     form?: bool|array{ // Form configuration
- *         enabled?: bool, // Default: true
+ *         enabled?: bool, // Default: false
  *         csrf_protection?: array{
  *             enabled?: scalar|null, // Default: null
  *             token_id?: scalar|null, // Default: null
@@ -259,7 +259,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         formats?: array<string, string|list<scalar|null>>,
  *     },
  *     assets?: bool|array{ // Assets configuration
- *         enabled?: bool, // Default: true
+ *         enabled?: bool, // Default: false
  *         strict_mode?: bool, // Throw an exception if an entry is missing from the manifest.json. // Default: false
  *         version_strategy?: scalar|null, // Default: null
  *         version?: scalar|null, // Default: null
@@ -278,7 +278,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         }>,
  *     },
  *     asset_mapper?: bool|array{ // Asset Mapper configuration
- *         enabled?: bool, // Default: true
+ *         enabled?: bool, // Default: false
  *         paths?: array<string, scalar|null>,
  *         excluded_patterns?: list<scalar|null>,
  *         exclude_dotfiles?: bool, // If true, any files starting with "." will be excluded from the asset mapper. // Default: true
@@ -406,7 +406,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         log_channel?: scalar|null, // The channel of log message. Null to let Symfony decide. // Default: null
  *     }>,
  *     web_link?: bool|array{ // Web links configuration
- *         enabled?: bool, // Default: true
+ *         enabled?: bool, // Default: false
  *     },
  *     lock?: bool|string|array{ // Lock configuration
  *         enabled?: bool, // Default: false
@@ -896,107 +896,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     dump_destination?: scalar|null, // A stream URL where dumps should be written to. // Default: null
  *     theme?: "dark"|"light", // Changes the color of the dump() output when rendered directly on the templating. "dark" (default) or "light". // Default: "dark"
  * }
- * @psalm-type TwigConfig = array{
- *     form_themes?: list<scalar|null>,
- *     globals?: array<string, array{ // Default: []
- *         id?: scalar|null,
- *         type?: scalar|null,
- *         value?: mixed,
- *     }>,
- *     autoescape_service?: scalar|null, // Default: null
- *     autoescape_service_method?: scalar|null, // Default: null
- *     cache?: scalar|null, // Default: true
- *     charset?: scalar|null, // Default: "%kernel.charset%"
- *     debug?: bool, // Default: "%kernel.debug%"
- *     strict_variables?: bool, // Default: "%kernel.debug%"
- *     auto_reload?: scalar|null,
- *     optimizations?: int,
- *     default_path?: scalar|null, // The default path used to load templates. // Default: "%kernel.project_dir%/templates"
- *     file_name_pattern?: list<scalar|null>,
- *     paths?: array<string, mixed>,
- *     date?: array{ // The default format options used by the date filter.
- *         format?: scalar|null, // Default: "F j, Y H:i"
- *         interval_format?: scalar|null, // Default: "%d days"
- *         timezone?: scalar|null, // The timezone used when formatting dates, when set to null, the timezone returned by date_default_timezone_get() is used. // Default: null
- *     },
- *     number_format?: array{ // The default format options for the number_format filter.
- *         decimals?: int, // Default: 0
- *         decimal_point?: scalar|null, // Default: "."
- *         thousands_separator?: scalar|null, // Default: ","
- *     },
- *     mailer?: array{
- *         html_to_text_converter?: scalar|null, // A service implementing the "Symfony\Component\Mime\HtmlToTextConverter\HtmlToTextConverterInterface". // Default: null
- *     },
- * }
- * @psalm-type WebProfilerConfig = array{
- *     toolbar?: bool|array{ // Profiler toolbar configuration
- *         enabled?: bool, // Default: false
- *         ajax_replace?: bool, // Replace toolbar on AJAX requests // Default: false
- *     },
- *     intercept_redirects?: bool, // Default: false
- *     excluded_ajax_paths?: scalar|null, // Default: "^/((index|app(_[\\w]+)?)\\.php/)?_wdt"
- * }
- * @psalm-type StimulusConfig = array{
- *     controller_paths?: list<scalar|null>,
- *     controllers_json?: scalar|null, // Default: "%kernel.project_dir%/assets/controllers.json"
- * }
- * @psalm-type TurboConfig = array{
- *     broadcast?: bool|array{
- *         enabled?: bool, // Default: true
- *         entity_template_prefixes?: list<scalar|null>,
- *         doctrine_orm?: bool|array{ // Enable the Doctrine ORM integration
- *             enabled?: bool, // Default: true
- *         },
- *     },
- *     default_transport?: scalar|null, // Default: "default"
- * }
- * @psalm-type TwigExtraConfig = array{
- *     cache?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     html?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     markdown?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     intl?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     cssinliner?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     inky?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     string?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     commonmark?: array{
- *         renderer?: array{ // Array of options for rendering HTML.
- *             block_separator?: scalar|null,
- *             inner_separator?: scalar|null,
- *             soft_break?: scalar|null,
- *         },
- *         html_input?: "strip"|"allow"|"escape", // How to handle HTML input.
- *         allow_unsafe_links?: bool, // Remove risky link and image URLs by setting this to false. // Default: true
- *         max_nesting_level?: int, // The maximum nesting level for blocks. // Default: 9223372036854775807
- *         max_delimiters_per_line?: int, // The maximum number of strong/emphasis delimiters per line. // Default: 9223372036854775807
- *         slug_normalizer?: array{ // Array of options for configuring how URL-safe slugs are created.
- *             instance?: mixed,
- *             max_length?: int, // Default: 255
- *             unique?: mixed,
- *         },
- *         commonmark?: array{ // Array of options for configuring the CommonMark core extension.
- *             enable_em?: bool, // Default: true
- *             enable_strong?: bool, // Default: true
- *             use_asterisk?: bool, // Default: true
- *             use_underscore?: bool, // Default: true
- *             unordered_list_markers?: list<scalar|null>,
- *         },
- *         ...<mixed>
- *     },
- * }
  * @psalm-type SecurityConfig = array{
  *     access_denied_url?: scalar|null, // Default: null
  *     session_fixation_strategy?: "none"|"migrate"|"invalidate", // Default: "migrate"
@@ -1460,10 +1359,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     framework?: FrameworkConfig,
  *     doctrine?: DoctrineConfig,
  *     doctrine_migrations?: DoctrineMigrationsConfig,
- *     twig?: TwigConfig,
- *     stimulus?: StimulusConfig,
- *     turbo?: TurboConfig,
- *     twig_extra?: TwigExtraConfig,
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
  *     "when@dev"?: array{
@@ -1474,11 +1369,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         doctrine?: DoctrineConfig,
  *         doctrine_migrations?: DoctrineMigrationsConfig,
  *         debug?: DebugConfig,
- *         twig?: TwigConfig,
- *         web_profiler?: WebProfilerConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
- *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
@@ -1490,10 +1380,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         framework?: FrameworkConfig,
  *         doctrine?: DoctrineConfig,
  *         doctrine_migrations?: DoctrineMigrationsConfig,
- *         twig?: TwigConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
- *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *     },
@@ -1504,11 +1390,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         framework?: FrameworkConfig,
  *         doctrine?: DoctrineConfig,
  *         doctrine_migrations?: DoctrineMigrationsConfig,
- *         twig?: TwigConfig,
- *         web_profiler?: WebProfilerConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
- *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *     },
