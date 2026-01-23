@@ -14,24 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource]
-class User
+class User extends BaseEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: Types::INTEGER)]
-    private ?int $id = null;
-
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $email;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $username;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isActive = true;

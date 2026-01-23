@@ -11,6 +11,4 @@ class ShoppingListCrudController extends AbstractCrudController
     {
         return ShoppingList::class;
     }
-
-    // Configure fields as needed
 }
