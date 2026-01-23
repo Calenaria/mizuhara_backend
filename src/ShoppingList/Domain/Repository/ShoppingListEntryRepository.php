@@ -3,6 +3,7 @@
 namespace App\ShoppingList\Domain\Repository;
 
 use App\ShoppingList\Domain\Entity\ShoppingList;
+use App\ShoppingList\Domain\Entity\ShoppingListEntry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,31 +14,6 @@ class ShoppingListEntryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ShoppingList::class);
+        parent::__construct($registry, ShoppingListEntry::class);
     }
-
-    //    /**
-    //     * @return ShoppingList[] Returns an array of ShoppingList objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ShoppingList
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
