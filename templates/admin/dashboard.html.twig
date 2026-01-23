@@ -1,0 +1,45 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    <h1>Household Manager Dashboard</h1>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-calendar"></i> Family Calendar
+                </div>
+                <div class="card-body">
+                    <p>Manage your family events and appointments.</p>
+                    <a href="{{ ea_url().setController('App\\FamilyCalendar\\Infrastructure\\Admin\\CalendarEventCrudController').setAction('index') }}" class="btn btn-primary">
+                        View Events
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i> Shopping Lists
+                </div>
+                <div class="card-body">
+                    <p>Organize your shopping and grocery lists.</p>
+                    <a href="{{ ea_url().setController('App\\ShoppingList\\Infrastructure\\Admin\\ShoppingListCrudController').setAction('index') }}" class="btn btn-primary">
+                        View Lists
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Welcome to your Household Manager admin panel!
+            </div>
+        </div>
+    </div>
+{% endblock %}
