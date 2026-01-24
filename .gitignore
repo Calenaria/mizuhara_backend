@@ -17,3 +17,6 @@
 /.idea/
 
 ### IDE ###
+### not to be committed ###
+src/Misc
+### not to be committed ###
