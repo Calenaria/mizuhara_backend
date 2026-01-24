@@ -17,7 +17,8 @@ class ShoppingListCollection extends BaseEntity
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private User $owner;
 
     #[ORM\Column(nullable: true)]
