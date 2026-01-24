@@ -26,12 +26,19 @@ class ShoppingList extends BaseEntity
     /**
      * @var Collection<int, ShoppingListEntry>
      */
-    #[ORM\OneToMany(targetEntity: ShoppingListEntry::class, mappedBy: 'shoppingList', orphanRemoval: true)]
+    /**
+     * @var Collection<int, ShoppingListEntry>
+     */
+    #[ORM\OneToMany(
+        targetEntity: ShoppingListEntry::class,
+        mappedBy: 'shoppingList'
+    )]
     private Collection $shoppingListEntries;
 
     public function __construct()
     {
         $this->shoppingListEntries = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getShoppingListCollection(): ?ShoppingListCollection

@@ -6,11 +6,11 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Shared\Domain\Entity\BaseEntity;
 use App\Shared\Domain\Entity\ProductInformation;
 use App\Shared\Domain\Entity\User;
-use App\ShoppingList\Domain\Repository\ShoppingListRepository;
+use App\ShoppingList\Domain\Repository\ShoppingListEntryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
-#[ORM\Entity(repositoryClass: ShoppingListRepository::class)]
+#[ORM\Entity(repositoryClass: ShoppingListEntryRepository::class)]
 class ShoppingListEntry extends BaseEntity
 {
     #[ORM\ManyToOne(inversedBy: 'shoppingListEntries')]
@@ -23,6 +23,19 @@ class ShoppingListEntry extends BaseEntity
 
     #[ORM\ManyToOne(inversedBy: 'shoppingListEntries')]
     private ?User $addedBy = null;
+
+    #[ORM\Column(nullable: false)]
+    private bool $acquired;
+
+    #[ORM\Column]
+    private int $quantity;
+
+    public function __construct()
+    {
+        $this->acquired = false;
+        $this->quantity = 1;
+        parent::__construct();
+    }
 
     public function getShoppingList(): ?ShoppingList
     {
@@ -56,6 +69,30 @@ class ShoppingListEntry extends BaseEntity
     public function setAddedBy(?User $addedBy): static
     {
         $this->addedBy = $addedBy;
+
+        return $this;
+    }
+
+    public function isAcquired(): bool
+    {
+        return $this->acquired;
+    }
+
+    public function setAcquired(bool $acquired): static
+    {
+        $this->acquired = $acquired;
+
+        return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

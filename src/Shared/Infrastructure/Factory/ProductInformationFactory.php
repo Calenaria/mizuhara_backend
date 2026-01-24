@@ -21,7 +21,6 @@ final class ProductInformationFactory extends PersistentObjectFactory
     {
         return [
             'brand' => ProductBrandFactory::new(),
-            'name' => self::faker()->text(255),
         ];
     }
 

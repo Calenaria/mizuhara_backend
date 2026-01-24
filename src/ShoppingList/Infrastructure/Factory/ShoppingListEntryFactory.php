@@ -24,6 +24,7 @@ final class ShoppingListEntryFactory extends PersistentObjectFactory
             'productInformation' => ProductInformationFactory::new(),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'updatedAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
+            'acquired' => false,
         ];
     }
 

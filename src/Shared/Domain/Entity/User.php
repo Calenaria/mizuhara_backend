@@ -43,6 +43,7 @@ class User extends BaseEntity
         $this->updatedAt = new \DateTimeImmutable();
         $this->shoppingLists = new ArrayCollection();
         $this->shoppingListEntries = new ArrayCollection();
+        parent::__construct();
     }
 
     #[ORM\PreUpdate]

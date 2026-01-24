@@ -24,6 +24,7 @@ class ProductBrand extends BaseEntity
     public function __construct()
     {
         $this->productInformation = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getId(): ?int
