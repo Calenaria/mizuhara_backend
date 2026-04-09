@@ -6,17 +6,39 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Shared\Domain\Repository\ProductInformationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProductInformationRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['product_information:read']],
+    denormalizationContext: ['groups' => ['product_information:write']]
+)]
 class ProductInformation extends BaseEntity
 {
+    #[Groups([
+        'product_information:read',
+        'shopping_list_entry:read',
+        'shopping_list:read',
+        'shopping_list_collection:read',
+    ])]
     #[ORM\Column(length: 255)]
     private ?string $code = null;
 
+    #[Groups([
+        'product_information:read',
+        'shopping_list_entry:read',
+        'shopping_list:read',
+        'shopping_list_collection:read',
+    ])]
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $productName = null;
 
+    #[Groups([
+        'product_information:read',
+        'shopping_list_entry:read',
+        'shopping_list:read',
+        'shopping_list_collection:read',
+    ])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $genericName = null;
 
@@ -113,8 +135,6 @@ class ProductInformation extends BaseEntity
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $imageUrl = null;
-
-    // Getters and Setters
 
     public function getId(): ?int
     {

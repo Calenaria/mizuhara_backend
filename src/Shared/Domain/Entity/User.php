@@ -5,13 +5,14 @@ namespace App\Shared\Domain\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\ShoppingList\Domain\Entity\ShoppingList;
 use App\ShoppingList\Domain\Entity\ShoppingListEntry;
+use App\Task\Domain\Entity\GenericTask;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'users')]
+#[ORM\Table(name: 'app_user')]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource]
 class User extends BaseEntity
@@ -37,6 +38,12 @@ class User extends BaseEntity
     #[ORM\OneToMany(targetEntity: ShoppingListEntry::class, mappedBy: 'addedBy')]
     private Collection $shoppingListEntries;
 
+    /**
+     * @var Collection<int, GenericTask>
+     */
+    #[ORM\OneToMany(targetEntity: \App\Task\Domain\Entity\GenericTask::class, mappedBy: 'assignee')]
+    private Collection $genericTasks;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -44,6 +51,7 @@ class User extends BaseEntity
         $this->shoppingLists = new ArrayCollection();
         $this->shoppingListEntries = new ArrayCollection();
         parent::__construct();
+        $this->genericTasks = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -163,5 +171,35 @@ class User extends BaseEntity
     public function __toString(): string
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @return Collection<int, GenericTask>
+     */
+    public function getGenericTasks(): Collection
+    {
+        return $this->genericTasks;
+    }
+
+    public function addGenericTask(GenericTask $genericTask): static
+    {
+        if (!$this->genericTasks->contains($genericTask)) {
+            $this->genericTasks->add($genericTask);
+            $genericTask->setAssignee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGenericTask(\App\Task\Domain\Entity\GenericTask $genericTask): static
+    {
+        if ($this->genericTasks->removeElement($genericTask)) {
+            // set the owning side to null (unless already changed)
+            if ($genericTask->getAssignee() === $this) {
+                $genericTask->setAssignee(null);
+            }
+        }
+
+        return $this;
     }
 }
