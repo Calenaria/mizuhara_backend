@@ -1,5 +1,18 @@
 services:
-###> doctrine/doctrine-bundle ###
+  app:
+    build: .
+    container_name: mizuhara_app
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: staging
+      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./var/log:/var/www/html/var/log
+
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     container_name: mizuhara_postgres
@@ -16,9 +29,6 @@ services:
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
 
 volumes:
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
