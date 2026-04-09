@@ -9,30 +9,39 @@ use App\ShoppingList\Domain\Repository\ShoppingListCollectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['shopping_list_collection:read']],
+    denormalizationContext: ['groups' => ['shopping_list_collection:write']]
+)]
 #[ORM\Entity(repositoryClass: ShoppingListCollectionRepository::class)]
 class ShoppingListCollection extends BaseEntity
 {
+    #[Groups(['shopping_list_collection:read'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
+    #[Groups(['shopping_list_collection:read'])]
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private User $owner;
 
+    #[Groups(['shopping_list_collection:read'])]
     #[ORM\Column(nullable: true)]
     private ?string $description = null;
 
     /**
      * @var Collection<int, ShoppingList>
      */
+    #[Groups(['shopping_list_collection:read'])]
     #[ORM\OneToMany(targetEntity: ShoppingList::class, mappedBy: 'shoppingListCollection')]
     private Collection $shoppingLists;
 
     public function __construct()
     {
         $this->shoppingLists = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getDescription(): ?string

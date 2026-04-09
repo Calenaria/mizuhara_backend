@@ -9,26 +9,30 @@ use App\ShoppingList\Domain\Repository\ShoppingListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['shopping_list:read']],
+    denormalizationContext: ['groups' => ['shopping_list:write']]
+)]
 #[ORM\Entity(repositoryClass: ShoppingListRepository::class)]
 class ShoppingList extends BaseEntity
 {
     #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
     private ?ShoppingListCollection $shoppingListCollection = null;
 
+    #[Groups(['shopping_list:read', 'shopping_list_collection:read'])]
     #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
     private ?User $addedBy = null;
 
+    #[Groups(['shopping_list:read', 'shopping_list:write', 'shopping_list_collection:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     /**
      * @var Collection<int, ShoppingListEntry>
      */
-    /**
-     * @var Collection<int, ShoppingListEntry>
-     */
+    #[Groups(['shopping_list:read', 'shopping_list_collection:read'])]
     #[ORM\OneToMany(
         targetEntity: ShoppingListEntry::class,
         mappedBy: 'shoppingList'

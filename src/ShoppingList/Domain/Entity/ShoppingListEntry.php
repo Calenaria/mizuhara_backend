@@ -8,25 +8,33 @@ use App\Shared\Domain\Entity\ProductInformation;
 use App\Shared\Domain\Entity\User;
 use App\ShoppingList\Domain\Repository\ShoppingListEntryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['shopping_list_entry:read']],
+    denormalizationContext: ['groups' => ['shopping_list_entry:write']]
+)]
 #[ORM\Entity(repositoryClass: ShoppingListEntryRepository::class)]
 class ShoppingListEntry extends BaseEntity
 {
+    #[Groups(['shopping_list_entry:write'])]
     #[ORM\ManyToOne(inversedBy: 'shoppingListEntries')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ShoppingList $shoppingList = null;
 
+    #[Groups(['shopping_list:read', 'shopping_list_entry:read', 'shopping_list_entry:write', 'shopping_list_collection:read'])]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?ProductInformation $productInformation = null;
 
+    #[Groups(['shopping_list:read', 'shopping_list_entry:read', 'shopping_list_entry:write', 'shopping_list_collection:read'])]
     #[ORM\ManyToOne(inversedBy: 'shoppingListEntries')]
     private ?User $addedBy = null;
 
+    #[Groups(['shopping_list:read', 'shopping_list_entry:read', 'shopping_list_entry:write', 'shopping_list_collection:read'])]
     #[ORM\Column(nullable: false)]
     private bool $acquired;
-
+    #[Groups(['shopping_list:read', 'shopping_list_entry:read', 'shopping_list_entry:write', 'shopping_list_collection:read'])]
     #[ORM\Column]
     private int $quantity;
 
