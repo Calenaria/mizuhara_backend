@@ -33,8 +33,9 @@ COPY docker/supervisord.conf /etc/supervisord.conf
 # App
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-RUN APP_ENV=prod php bin/console cache:clear --no-warmup
+RUN composer install --optimize-autoloader --no-scripts
+RUN APP_ENV=dev php bin/console assets:install
+RUN APP_ENV=dev php bin/console cache:clear --no-warmup
 
 RUN chown -R www-data:www-data /var/www/html/var
 
