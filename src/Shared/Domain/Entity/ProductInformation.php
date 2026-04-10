@@ -4,6 +4,9 @@ namespace App\Shared\Domain\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Shared\Domain\Repository\ProductInformationRepository;
+use App\StockMovement\Domain\Entity\StockInbound;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -135,6 +138,18 @@ class ProductInformation extends BaseEntity
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $imageUrl = null;
+
+    /**
+     * @var Collection<int, \App\StockMovement\Domain\Entity\StockInbound>
+     */
+    #[ORM\OneToMany(targetEntity: StockInbound::class, mappedBy: 'product')]
+    private Collection $stockInbounds;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->stockInbounds = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -283,4 +298,34 @@ class ProductInformation extends BaseEntity
 
     public function getImageUrl(): ?string { return $this->imageUrl; }
     public function setImageUrl(?string $imageUrl): static { $this->imageUrl = $imageUrl; return $this; }
+
+    /**
+     * @return Collection<int, \App\StockMovement\Domain\Entity\StockInbound>
+     */
+    public function getStockInbounds(): Collection
+    {
+        return $this->stockInbounds;
+    }
+
+    public function addStockInbound(StockInbound $stockInbound): static
+    {
+        if (!$this->stockInbounds->contains($stockInbound)) {
+            $this->stockInbounds->add($stockInbound);
+            $stockInbound->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockInbound(\App\StockMovement\Domain\Entity\StockInbound $stockInbound): static
+    {
+        if ($this->stockInbounds->removeElement($stockInbound)) {
+            // set the owning side to null (unless already changed)
+            if ($stockInbound->getProduct() === $this) {
+                $stockInbound->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -36,6 +36,13 @@ doctrine:
                 prefix: 'App\Inventory\Domain\Entity'
                 alias: Inventory
 
+            StockMovement:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/StockMovement/Domain/Entity'
+                prefix: 'App\StockMovement\Domain\Entity'
+                alias: StockMovement
+
             Task:
                 type: attribute
                 is_bundle: false

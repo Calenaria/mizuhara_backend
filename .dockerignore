@@ -1,0 +1,19 @@
+# Dependencies (werden im Build neu installiert)
+vendor/
+
+# Symfony cache & logs
+var/cache/
+var/log/
+var/data/
+
+# Git
+.git/
+
+# Große Datendateien
+src/Misc/
+
+# Dev-only
+.env.local
+.env.*.local
+credentials.json
+token.json
